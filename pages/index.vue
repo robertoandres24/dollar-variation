@@ -9,7 +9,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  async created() {
+    const { data: todo } = await this.$axios.get(
+      'https://jsonplaceholder.typicode.com/todos/1'
+    )
+    console.log(todo)
+  },
+}
 </script>
 
 <style></style>
