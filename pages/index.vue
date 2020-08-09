@@ -4,7 +4,12 @@
       <h1 class="title">
         usd-variation to CLP
       </h1>
-      <line-chart v-if="loaded" :chartdata="chartdata" :options="options" />
+      <line-chart
+        v-if="loaded"
+        :chartdata="chartdata"
+        :options="options"
+        :height="800"
+      />
     </div>
   </div>
 </template>
@@ -64,6 +69,7 @@ export default {
         ],
       }
       vm.options = {
+        maintainAspectRatio: false,
         responsive: true,
         legend: {
           display: false,
@@ -89,6 +95,11 @@ export default {
             },
           ],
         },
+        elements: {
+          point: {
+            radius: 0,
+          },
+        },
       }
     },
   },
@@ -97,6 +108,6 @@ export default {
 
 <style>
 .wrapper {
-  padding-bottom: 5em;
+  padding: 2em 0 5em;
 }
 </style>
