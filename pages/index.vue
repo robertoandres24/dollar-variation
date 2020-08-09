@@ -24,11 +24,12 @@ export default {
     const { data: timeserie } = await this.$axios.get(
       `https://marketdata.tradermade.com/api/v1/timeseries?api_key=${this.apiKey}&currency=${this.currency}&start_date=${this.startDate}&end_date=${this.endDate}`
     )
-    const values = timeserie.quotes.map((q) => parseInt(q.close))
-    this.variations = values.map((curr, i, arr) => {
-      if (i === 0) return 0
-      return curr - arr[i - 1]
-    })
+    this.variations = timeserie.quotes
+      .map((clpDayValue) => parseInt(clpDayValue.close))
+      .map((curr, i, arr) => {
+        if (i === 0) return 0
+        return curr - arr[i - 1]
+      })
   },
 }
 </script>
