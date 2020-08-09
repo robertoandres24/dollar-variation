@@ -1,14 +1,10 @@
 <template>
   <div class="container">
-    <div>
+    <div class="wrapper">
       <h1 class="title">
-        usd-variation
+        usd-variation to CLP
       </h1>
       <line-chart v-if="loaded" :chartdata="chartdata" :options="options" />
-    </div>
-    <div v-if="variations.length">
-      <h3>Variations</h3>
-      <p>{{ variations }}</p>
     </div>
   </div>
 </template>
@@ -40,10 +36,18 @@ export default {
     getVariations(clpValuesInfo) {
       return Promise.all(
         clpValuesInfo
-          .map((clpDayValue) => parseInt(clpDayValue.close))
+          .map((clpDayInfo) => {
+            return {
+              value: parseInt(clpDayInfo.close),
+              date: clpDayInfo.date,
+            }
+          })
           .map((curr, i, arr) => {
             if (i === 0) return 0
-            return curr - arr[i - 1]
+            return {
+              value: curr.value - arr[i - 1].value,
+              date: curr.date,
+            }
           })
       )
     },
@@ -51,11 +55,11 @@ export default {
       this.loaded = true
       const vm = this
       vm.chartdata = {
-        labels: vm.variations,
+        labels: vm.variations.map((v) => vm.$moment(v.date)),
         datasets: [
           {
             label: 'Dollar variation',
-            data: vm.variations,
+            data: vm.variations.map((v) => v.value),
           },
         ],
       }
@@ -69,6 +73,14 @@ export default {
           text: 'Dollar Variation',
         },
         scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                unit: 'month',
+              },
+            },
+          ],
           yAxes: [
             {
               ticks: {
@@ -83,4 +95,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.wrapper {
+  padding-bottom: 5em;
+}
+</style>

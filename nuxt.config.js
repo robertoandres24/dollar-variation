@@ -46,7 +46,11 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
+    '@nuxtjs/moment',
   ],
+  moment: {
+    defaultLocale: 'es',
+  },
   /*
    ** Nuxt.js modules
    */
